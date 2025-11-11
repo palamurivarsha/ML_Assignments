@@ -1,0 +1,48 @@
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+from nltk import pos_tag
+
+# Download resources (run once)
+nltk.download('punkt')
+nltk.download('punkt_tab')
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+nltk.download('averaged_perceptron_tagger_eng')   # new tagger name
+
+# User input
+text = input("Enter a sentence: ")
+
+# 1. Tokenization
+tokens = word_tokenize(text)
+
+# 2. Remove stopwords
+stop_words = set(stopwords.words('english'))
+filtered_tokens = [w for w in tokens if w.lower() not in stop_words]
+
+# 3. POS tagging
+tagged = pos_tag(filtered_tokens)
+
+# Map POS to WordNet
+from nltk.corpus.reader.wordnet import NOUN, VERB
+
+def get_wordnet_pos(tag):
+    if tag.startswith('V'):
+        return VERB
+    elif tag.startswith('N'):
+        return NOUN
+    return None
+
+# 4. Lemmatization + keep nouns/verbs
+lemmatizer = WordNetLemmatizer()
+final_tokens = []
+
+for word, tag in tagged:
+    wn_tag = get_wordnet_pos(tag)
+    if wn_tag:
+        lemma = lemmatizer.lemmatize(word, wn_tag)
+        final_tokens.append(lemma)
+
+print("Processed tokens:", final_tokens)

@@ -1,0 +1,21 @@
+import spacy
+
+nlp = spacy.load("en_core_web_sm")
+
+# Take input from the user
+text = input("Enter text: ")
+
+# Process the text with spaCy
+doc = nlp(text)
+
+# 1. Named Entity Recognition (NER)
+print("Named Entities:")
+for ent in doc.ents:
+    print(f"{ent.text}  -->  {ent.label_}")
+
+# 2. Pronoun ambiguity detection
+pronouns = {"he", "she", "they"}
+words = {token.text.lower() for token in doc}
+
+if pronouns.intersection(words):
+    print("Warning: Possible pronoun ambiguity detected!")

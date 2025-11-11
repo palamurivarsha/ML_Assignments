@@ -1,0 +1,57 @@
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords, wordnet
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk import pos_tag
+
+# Download all required NLTK resources (including new tagger name)
+nltk.download('punkt')
+nltk.download('punkt_tab')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('averaged_perceptron_tagger_eng')  # <-- Add this line
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+
+# Helper function to map NLTK POS to WordNet POS for lemmatization
+def get_wordnet_pos(tag):
+    if tag.startswith('J'):
+        return wordnet.ADJ
+    elif tag.startswith('V'):
+        return wordnet.VERB
+    elif tag.startswith('N'):
+        return wordnet.NOUN
+    elif tag.startswith('R'):
+        return wordnet.ADV
+    else:
+        return wordnet.NOUN
+
+# Initialize tools
+stop_words = set(stopwords.words('english'))
+stemmer = PorterStemmer()
+lemmatizer = WordNetLemmatizer()
+
+# Input sentences
+sentences = [
+    "The duck will duck under the table.",
+    "I will book a room to read a book."
+]
+
+# Process each sentence
+for sent in sentences:
+    print(f"\nSentence: {sent}")
+    tokens = word_tokenize(sent)
+    tokens = [t for t in tokens if t.lower() not in stop_words and t.isalpha()]
+    pos_tags = pos_tag(tokens)
+
+    print(f"{'Token':<10} | {'Stem':<10} | {'Lemma':<10} | {'POS':<8} | Comment")
+    print("-" * 65)
+
+    for token, tag in pos_tags:
+        wn_pos = get_wordnet_pos(tag)
+        stem = stemmer.stem(token)
+        lemma = lemmatizer.lemmatize(token, wn_pos)
+        comment = ""
+        if token.lower() in ['duck', 'book']:
+            comment = "lemma clarifies noun vs verb usage"
+        print(f"{token:<10} | {stem:<10} | {lemma:<10} | {tag:<8} | {comment}")
