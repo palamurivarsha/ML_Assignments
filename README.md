@@ -21,3 +21,42 @@ Pronoun Ambiguity Detection:
 2.Prints a warning if possible ambiguity is detected.
 *POS filtering keeps verbs and nouns for better content analysis.
 *Pronoun ambiguity detection is basic and highlights potential issues for further coreference resolution.
+
+# Scaled Dot-Product Attention (NumPy)
+
+This program implements the core attention mechanism used in Transformer models.  
+The user provides Q, K, and V matrices, and the script computes:
+
+- Scaled attention scores: QKᵀ / √dₖ  
+- Softmax attention weights  
+- Final context vector: softmax(scores) × V
+
+
+---
+
+# ✅ **README 2 — Simple Transformer Encoder Block (PyTorch)**  
+**Brief + Informative**
+
+```markdown
+# Simple Transformer Encoder Block (PyTorch)
+
+This project implements a minimal Transformer Encoder Block, focusing on the essential components:
+
+### Components
+- Multi-Head Self-Attention  
+- Feed-Forward Network (Linear → ReLU → Linear)  
+- **Residual Connections**  
+- **Layer Normalization**  
+- d_model = 128, num_heads = 8
+
+### Input / Output
+- Input shape: (32, 10, 128)  
+- Output shape: (32, 10, 128)  
+The encoder block preserves the original sequence shape.
+
+### How It Works
+1. `x → MultiHeadAttention → Add & LayerNorm`
+2. `x → FeedForward → Add & LayerNorm`
+
+
+
